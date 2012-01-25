@@ -28,45 +28,38 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "imagewriterfactory.h"
-#include "image/builtinimagewriter.h"
-#include "image/targawriter.h"
-#include "image/pngawriter.h"
+#include "pngawriter.h"
 
-static AbstractImageWriter* PNG_img_writer(QObject* parent) {
-    return new BuiltinImageWriter("png","PNG",parent);
-}
-static AbstractImageWriter* png_img_writer(QObject* parent) {
-    return new BuiltinImageWriter("png","png",parent);
-}
+#include "builtinimagewriter.h"
+#include "layoutdata.h"
+#include <QImage>
+#include <QPainter>
+#include "../layoutconfig.h"
+#include <png++/png.hpp>
 
-static AbstractImageWriter* TGA_img_writer(QObject* parent) {
-    return new TargaImageWriter("TGA",parent);
-}
-static AbstractImageWriter* tga_img_writer(QObject* parent) {
-    return new TargaImageWriter("tga",parent);
-}
-static AbstractImageWriter* PNGA_img_writer(QObject* parent) {
-    return new PNGAImageWriter("png",parent);
-}
+#include <QDebug>
 
-ImageWriterFactory::ImageWriterFactory(QObject *parent) :
-    QObject(parent)
+PNGAImageWriter::PNGAImageWriter(QString ext,QObject *parent) :
+    AbstractImageWriter(parent)
 {
-    m_factorys["png"] = &png_img_writer;
-    m_factorys["PNG"] = &PNG_img_writer;
-    m_factorys["tga"] = &tga_img_writer;
-    m_factorys["TGA"] = &TGA_img_writer;
-    m_factorys["png alpha"] = &PNGA_img_writer;
+    setExtension(ext);
+    setReloadSupport(false);
 }
 
-QStringList ImageWriterFactory::names() const {
-    return m_factorys.keys();
-}
 
-AbstractImageWriter* ImageWriterFactory::build(const QString &name,QObject* parent) {
-    if (m_factorys.contains(name)) {
-        return m_factorys[name](parent);
+bool PNGAImageWriter::Export(QFile& file) {
+    QImage pixmap = buildImage();
+    assert(pixmap.isGrayscale());
+    png::image<png::gray_pixel> image(pixmap.width(), pixmap.height());
+    for (size_t y = 0; y < image.get_height(); ++y)
+    {
+        for (size_t x = 0; x < image.get_width(); ++x)
+        {
+            QRgb pix = pixmap.pixel(x, y);
+            assert(qIsGray(pix));
+            image[y][x] = png::gray_pixel(qAlpha(pix));
+        }
     }
-    return 0;
+    image.write(file.fileName().toStdString());
+    return true;
 }

@@ -57,6 +57,7 @@ SOURCES += src/main.cpp \
     src/image/builtinimagewriter.cpp \
     src/exporters/zfiexporter.cpp \
     src/image/targawriter.cpp \
+    src/image/pngawriter.cpp \
     src/fonttestframe.cpp \
     src/fonttestwidget.cpp \
     src/exporters/divoexporter.cpp \
@@ -93,6 +94,7 @@ HEADERS += src/fontbuilder.h \
     src/image/builtinimagewriter.h \
     src/exporters/zfiexporter.h \
     src/image/targawriter.h \
+    src/image/pngawriter.h \
     src/fonttestframe.h \
     src/fonttestwidget.h \
     src/exporters/divoexporter.h \

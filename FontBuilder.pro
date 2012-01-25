@@ -67,7 +67,8 @@ SOURCES += src/main.cpp \
     src/exporters/luaexporter.cpp \
     src/fontdrawwidget.cpp \
     src/fontloader.cpp \
-    src/exporters/sparrowexporter.cpp
+    src/exporters/sparrowexporter.cpp \
+    src/exporters/simplexmlexporter.cpp
 HEADERS += src/fontbuilder.h \
     src/colorbutton.h \
     src/fontselectframe.h \
@@ -104,7 +105,8 @@ HEADERS += src/fontbuilder.h \
     src/exporters/luaexporter.h \
     src/fontdrawwidget.h \
     src/fontloader.h \
-    src/exporters/sparrowexporter.h
+    src/exporters/sparrowexporter.h \
+    src/exporters/simplexmlexporter.h
 FORMS += src/fontbuilder.ui \
     src/fontselectframe.ui \
     src/fontoptionsframe.ui \

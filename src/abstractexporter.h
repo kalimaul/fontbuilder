@@ -47,6 +47,7 @@ class AbstractExporter : public QObject
 Q_OBJECT
 public:
     explicit AbstractExporter(QObject *parent );
+    virtual ~AbstractExporter() {}
 
     const QString& getErrorString() const { return m_error_string;}
     const QString& getExtension() const { return m_extension;}

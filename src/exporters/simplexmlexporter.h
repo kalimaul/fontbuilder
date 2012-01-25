@@ -28,37 +28,22 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "exporterfactory.h"
+#ifndef SIMPLEXMLEXPORTER_H
+#define SIMPLEXMLEXPORTER_H
 
+#include "../abstractexporter.h"
 
-extern AbstractExporter* GHLExporterFactoryFunc (QObject*);
-extern AbstractExporter* ZFIExporterFactoryFunc (QObject* parent);
-extern AbstractExporter* DivoExporterFactoryFunc (QObject*);
-extern AbstractExporter* NGLExporterFactoryFunc (QObject*);
-extern AbstractExporter* LuaExporterFactoryFunc (QObject*);
-extern AbstractExporter* SparrowExporterFactoryFunc (QObject*);
-extern AbstractExporter* SimpleXMLExporterFactoryFunc (QObject*);
-
-ExporterFactory::ExporterFactory(QObject *parent) :
-    QObject(parent)
+class SimpleXMLExporter : public AbstractExporter
 {
-    m_factorys["GHL"] = &GHLExporterFactoryFunc;
-    m_factorys["ZenGL-zfi"] = &ZFIExporterFactoryFunc;
-    m_factorys["Divo compatible - xml"] = &DivoExporterFactoryFunc;
-    m_factorys["NGL"] = &NGLExporterFactoryFunc;
-    m_factorys["Lua table"] = &LuaExporterFactoryFunc;
-    m_factorys["Sparrow"] = &SparrowExporterFactoryFunc;
-    m_factorys["Simple XML"] = &SimpleXMLExporterFactoryFunc;
-}
+Q_OBJECT
+public:
+    explicit SimpleXMLExporter(QObject *parent = 0);
 
+    virtual bool Export(QByteArray& out);
+signals:
 
-QStringList ExporterFactory::names() const {
-    return m_factorys.keys();
-}
+public slots:
 
-AbstractExporter* ExporterFactory::build(const QString &name,QObject* parent) {
-    if (m_factorys.contains(name)) {
-        return m_factorys[name](parent);
-    }
-    return 0;
-}
+};
+
+#endif // SIMPLEXMLEXPORTER_H
